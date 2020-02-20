@@ -5,7 +5,7 @@ import os
 def rename(dirname, filename, newfilename):
     print(f"The file {filename} in {dirname} has been renamed to {newfilename}")
     os.rename(dirname + "/" + filename, dirname + "/" + newfilename)
-    
+
 path = input("Please enter the directory name: ")
 word = input("Please enter the prefix/postfix that need to be removed: ")
 
