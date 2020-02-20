@@ -5,9 +5,12 @@ myremove=${repo}/myremove.py
 test_dir=/tmp/test
 
 generate_testfiles() {
+    prefix=$1
+    postfix=$2
     # Generate test files
+    mkdir ${test_dir}/inner/
     for num in $(seq 1 20); do
-        touch ${test_dir}/a${num}.file
+        touch ${test_dir}/${prefix}${num}${postfix} ${test_dir}/inner/a${num}.file
     done
 }
 
@@ -19,13 +22,16 @@ die() {
 mkdir -p $test_dir
 rm -rf ${test_dir}/*
 
-generate_testfiles
+generate_testfiles a .file
 
-# Now run the test, it should success
-echo -e "${test_dir}\na" | $myremove || die
+# Now run the test for prefix
+echo -e "${test_dir}\na" | $myremove 
 
-generate_testfiles
-# Now run the test, it should fail
-echo -e "${test_dir}\na" | $myremove && die
+# Now run the test for postfix
+echo -e "${test_dir}\n.file" | $myremove || die postfix
+
+generate_testfiles a
+# Now rerun the test, it should fail
+echo -e "${test_dir}\na" | $myremove && die no-overwrite
 
 echo -e "\nAll test passed!"
