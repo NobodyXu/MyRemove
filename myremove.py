@@ -3,6 +3,18 @@
 import sys
 import os
 
+# A primitive implementation that use os.access
+# This cannot avoid race condition:
+#
+#  1. Program checked using os.access that the new filename does not exist
+#  2. Someone created that file ASAP after the check
+#  3. Program called os.rename
+def assertNotExist(root, oldfilename, newfilename):
+    if os.access(root + "/" + newfilename, os.F_OK):
+        print(f"Error when renaming {oldfilename} as {newfilename}:")
+        print(f"    {newfilename} already exists in {root}!")
+        sys.exit(1)
+
 def onerror(error):
     raise error
 
@@ -23,6 +35,7 @@ def main():
             else:
                 continue
     
+            assertNotExist(root, filename, newfilename)
             rename(root, filename, newfilename)
 
 # Catch OSError and print them to avoid traceback
