@@ -3,26 +3,28 @@
 import sys
 import os
 
-# A primitive implementation that use os.access
-# This cannot avoid race condition:
-#
-#  1. Program checked using os.access that the new filename does not exist
-#  2. Someone created that file ASAP after the check
-#  3. Program called os.rename
-def assertNotExist(dir_fd, oldfilename, newfilename):
-    if os.access(newfilename, os.F_OK, dir_fd = dir_fd):
-        print(f"Error when renaming {oldfilename} as {newfilename}:")
-        print(f"    {newfilename} already exists!")
-        sys.exit(1)
-
 def onerror(error):
     raise error
 
+# This implementation use link + unlink to rename
+# 
+# Potential race case:
+# 
+#     Process get terminated before unlink, therefore
+#     both filename and newfilename exists in the filesystem
+def rename_impl1(dir_fd, filename, newfilename):
+    try:
+        os.link(filename, newfilename, src_dir_fd = dir_fd, dst_dir_fd = dir_fd)
+    except FileExistsError:
+        print(f"Error when renaming {filename} as {newfilename}:")
+        print(f"    {newfilename} already exists!")
+        sys.exit(1)
+    os.unlink(filename, dir_fd = dir_fd)
+
 # rename will not overwrite any existing file
 def rename(dir_fd, filename, newfilename):
-    assertNotExist(dir_fd, filename, newfilename)
+    rename_impl1(dir_fd, filename, newfilename)
     print(f"The file {filename} has been renamed to {newfilename}")
-    os.rename(filename, newfilename, src_dir_fd = dir_fd, dst_dir_fd = dir_fd)
 
 def main():
     path = input("Please enter the directory name: ")
