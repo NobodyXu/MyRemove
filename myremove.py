@@ -3,6 +3,9 @@
 import sys
 import os
 
+def onerror(error):
+    raise error
+
 def rename(dirname, filename, newfilename):
     print(f"The file {filename} in {dirname} has been renamed to {newfilename}")
     os.rename(dirname + "/" + filename, dirname + "/" + newfilename)
@@ -10,7 +13,7 @@ def rename(dirname, filename, newfilename):
 path = input("Please enter the directory name: ")
 word = input("Please enter the prefix/postfix that need to be removed: ")
 
-for root, dirnames, filenames in os.walk(path):
+for root, dirnames, filenames in os.walk(path, onerror = onerror):
     for filename in filenames:
         if filename.startswith(word):
             newfilename = filename[len(word): ]
