@@ -18,4 +18,4 @@ for root, dirnames, filenames in os.walk(path):
     for filename in filenames:
         if word in filename:
             full_com = root + "/" + filename
-            rename(full_com,word)
+            rename(full_com, word)
