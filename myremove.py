@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 import os
 
 def rename(dirname, filename, newfilename):
@@ -12,6 +13,10 @@ word = input("Please enter the prefix/postfix that need to be removed: ")
 for root, dirnames, filenames in os.walk(path):
     for filename in filenames:
         if filename.startswith(word):
-            rename(root, filename, filename[len(word) :])
+            newfilename = filename[len(word): ]
         elif filename.endswith(word):
-            rename(root, filename, filename[:-len(word)])
+            newfilename = filename[:-len(word)]
+        else:
+            continue
+
+        rename(root, filename, newfilename)
