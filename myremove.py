@@ -32,7 +32,12 @@ def rename_impl1(dir_fd, filename, newfilename):
     os.unlink(filename, dir_fd = dir_fd)
 
 # rename will not overwrite any existing file
+# newfilename != ""
 def rename(dir_fd, filename, newfilename, verbose):
+    if not newfilename:
+        print(f"Error:")
+        print(f"    Attempting to rename '{filename}' to ''!")
+        sys.exit(1)
     rename_impl1(dir_fd, filename, newfilename)
     if verbose:
         print(f"The file {filename} has been renamed to {newfilename}")

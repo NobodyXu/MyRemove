@@ -54,6 +54,10 @@ for calling_convention in argv stdin; do
     # Now rerun the test, it should fail
     call_myremove $calling_convention a
     [ $? -eq 0 ] && die no-overwrite
+
+    # Empty newfilename test
+    call_myremove $calling_convention 1
+    [ $? -ne 3 ] && die "empty newfilename test failed"
     
     echo -e "\nAll test passed!"
 done
