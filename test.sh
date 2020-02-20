@@ -53,7 +53,7 @@ for calling_convention in argv stdin; do
     generate_testfiles a
     # Now rerun the test, it should fail
     call_myremove $calling_convention a
-    [ $? -eq 0 ] && die no-overwrite
+    [ $? -ne 2 ] && die no-overwrite
 
     # Empty newfilename test
     call_myremove $calling_convention 1
