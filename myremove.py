@@ -27,7 +27,7 @@ def forking(command,filename,stripword):
 path = input("Please enter the directory name: ")
 word = input("Please enter the prefix/postfix that need to be removed: ")
 
-for root,dirnames,filenames in os.walk(path):
+for root, dirnames, filenames in os.walk(path):
     for allfile in filenames:
         if word in allfile:
             full_com = root + "/" + allfile
