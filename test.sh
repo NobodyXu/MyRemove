@@ -57,7 +57,7 @@ for calling_convention in argv stdin; do
 
     # Empty newfilename test
     call_myremove $calling_convention 1
-    [ $? -ne 3 ] && die "empty newfilename test failed"
+    [ $? -ne 3 ] && die "empty newfilename"
     
     echo -e "\nAll test passed!"
 done
