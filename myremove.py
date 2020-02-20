@@ -18,7 +18,9 @@ def assertNotExist(root, oldfilename, newfilename):
 def onerror(error):
     raise error
 
+# rename will not overwrite any existing file
 def rename(dirname, filename, newfilename):
+    assertNotExist(dirname, filename, newfilename)
     print(f"The file {filename} in {dirname} has been renamed to {newfilename}")
     os.rename(dirname + "/" + filename, dirname + "/" + newfilename)
 
@@ -35,7 +37,6 @@ def main():
             else:
                 continue
     
-            assertNotExist(root, filename, newfilename)
             rename(root, filename, newfilename)
 
 # Catch OSError and print them to avoid traceback
