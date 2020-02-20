@@ -23,21 +23,37 @@ assertNotExist() {
     [ -n "$(find $test_dir -name '$1')" ] && die prefix
 }
 
-mkdir -p $test_dir
-rm -rf ${test_dir}/*
+call_myremove() {
+    calling_convention=$1
+    word=$2
 
-generate_testfiles a .file
+    if [ $calling_convention = argv ]; then
+        $myremove $test_dir $word
+    elif [ $calling_convention = stdin ]; then
+        echo -e "${test_dir}\n${word}" | $myremove
+    fi
+}
 
-# Now run the test for prefix
-echo -e "${test_dir}\na" | $myremove || die prefix
-assertNotExist 'a*'
-
-# Now run the test for postfix
-echo -e "${test_dir}\n.file" | $myremove || die postfix
-assertNotExist '*.file'
-
-generate_testfiles a
-# Now rerun the test, it should fail
-echo -e "${test_dir}\na" | $myremove && die no-overwrite
-
-echo -e "\nAll test passed!"
+for calling_convention in argv stdin; do
+    mkdir -p $test_dir
+    rm -rf ${test_dir}/*
+    
+    generate_testfiles a .file
+    
+    # Now run the test for prefix
+    call_myremove $calling_convention a prefix
+    [ $? -ne 0 ] && die prefix
+    assertNotExist 'a*'
+    
+    # Now run the test for postfix
+    call_myremove $calling_convention .file
+    [ $? -ne 0 ] && die postfix
+    assertNotExist '*.file'
+    
+    generate_testfiles a
+    # Now rerun the test, it should fail
+    call_myremove $calling_convention a
+    [ $? -eq 0 ] && die no-overwrite
+    
+    echo -e "\nAll test passed!"
+done
