@@ -2,7 +2,6 @@ import sys
 import os
 
 def rename(command, filename, stripword):
-    #child
     newfilename = filename.split('/')
     print(newfilename[1])
     prefix = newfilename[1].split('.')
