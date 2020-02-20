@@ -24,10 +24,10 @@ def forking(command,filename,stripword):
             sys.exit("ERROR! EXITING WITH NON ZERO CODE!")
 
     
-
+path = input("Please enter the directory name: ")
 word = input("Please enter the prefix/postfix that need to be removed: ")
 
-for root,list,file in os.walk(input("Please enter the directory name: ")):
+for root,list,file in os.walk(path):
     for allfile in file:
         if word in allfile:
             full_com = root + "/" + allfile
