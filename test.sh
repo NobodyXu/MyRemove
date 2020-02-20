@@ -8,7 +8,7 @@ generate_testfiles() {
     prefix=$1
     postfix=$2
     # Generate test files
-    mkdir ${test_dir}/inner/
+    mkdir -p ${test_dir}/inner/
     for num in $(seq 1 20); do
         touch ${test_dir}/${prefix}${num}${postfix} ${test_dir}/inner/a${num}.file
     done
