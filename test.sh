@@ -19,6 +19,10 @@ die() {
     exit 1
 }
 
+assertNotExist() {
+    [ -n "$(find $test_dir -name '$1')" ] && die prefix
+}
+
 mkdir -p $test_dir
 rm -rf ${test_dir}/*
 
@@ -26,9 +30,11 @@ generate_testfiles a .file
 
 # Now run the test for prefix
 echo -e "${test_dir}\na" | $myremove 
+assertNotExist 'a*'
 
 # Now run the test for postfix
 echo -e "${test_dir}\n.file" | $myremove || die postfix
+assertNotExist '*.file'
 
 generate_testfiles a
 # Now rerun the test, it should fail
