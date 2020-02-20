@@ -29,7 +29,7 @@ rm -rf ${test_dir}/*
 generate_testfiles a .file
 
 # Now run the test for prefix
-echo -e "${test_dir}\na" | $myremove 
+echo -e "${test_dir}\na" | $myremove || die prefix
 assertNotExist 'a*'
 
 # Now run the test for postfix
