@@ -32,13 +32,10 @@ def main():
         print(f"In dir {root}")
         for filename in filenames:
             if filename.startswith(word):
-                newfilename = filename[len(word): ]
+                rename(dir_fd, filename, filename[len(word): ])
             elif filename.endswith(word):
-                newfilename = filename[:-len(word)]
-            else:
-                continue
+                rename(dir_fd, filename, filename[:-len(word)])
     
-            rename(dir_fd, filename, newfilename)
 
 # Catch OSError and print them to avoid traceback
 # as OSError does not necessary mean bugs
