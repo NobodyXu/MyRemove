@@ -28,7 +28,7 @@ def rename_impl1(dir_fd, filename, newfilename):
     except FileExistsError:
         print(f"Error when renaming {filename} as {newfilename}:")
         print(f"    {newfilename} already exists!")
-        sys.exit(1)
+        sys.exit(2)
     os.unlink(filename, dir_fd = dir_fd)
 
 # rename will not overwrite any existing file
@@ -37,7 +37,7 @@ def rename(dir_fd, filename, newfilename, verbose):
     if not newfilename:
         print(f"Error:")
         print(f"    Attempting to rename '{filename}' to ''!")
-        sys.exit(1)
+        sys.exit(3)
     rename_impl1(dir_fd, filename, newfilename)
     if verbose:
         print(f"The file {filename} has been renamed to {newfilename}")
